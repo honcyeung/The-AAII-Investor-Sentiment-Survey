@@ -1,11 +1,11 @@
-# Pipedream workflow code
 import requests
+import os
 from bs4 import BeautifulSoup
 from datetime import datetime
 
 # Define the handler function that Pipedream expects
 def handler(pd: "pipedream"):
-    # Your original web scraping function
+  
     def web_scraping():
         url = "https://www.aaii.com/sentimentsurvey"
         
@@ -18,7 +18,7 @@ def handler(pd: "pipedream"):
         
         # Parse HTML and extract the value
         soup = BeautifulSoup(response.text, "html.parser")
-        weekending_divs = soup.find_all('div', class_='weekending')
+        weekending_divs = soup.find_all('div', class_ = 'weekending')
         
         # Extract the text content and process it
         sentiment_list = [div.get_text(strip = True) for div in weekending_divs]
@@ -35,7 +35,6 @@ def handler(pd: "pipedream"):
         return d
 
     try:
-        # Get the sentiment data
         sentiment_data = web_scraping()
         
         # Format the message
@@ -48,9 +47,9 @@ def handler(pd: "pipedream"):
         
         # IFTTT webhook configuration
         # Replace with your actual IFTTT webhook URL
-        ifttt_webhook_url = "https://maker.ifttt.com/trigger/AAII_sentiment/json/with/key/igewpc_ra3xn0R0AxLZ5rYB_tVawQCxUBqo9SkRCV8Z"
+        ifttt_key = os.environ["IFTTT_AAII_SENTIMENT_KEY"]
+        ifttt_webhook_url = f"https://maker.ifttt.com/trigger/AAII_sentiment/json/with/key/{ifttt_key}"
         
-        # Payload for IFTTT (adjust based on your IFTTT applet configuration)
         payload = {
             "value1": message
         }
@@ -71,5 +70,3 @@ def handler(pd: "pipedream"):
             "status": "error",
             "error_message": str(e)
         }
-
-# Note: In Pipedream, this code goes in a Python code step
