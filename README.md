@@ -49,42 +49,6 @@ Prerequisites
 - IFTTT Account
 - Telegram Account
 
-Step 1: Configure the Notification Service (Pipeline Steps 4-6)
-This first step sets up the receiving end of the pipeline in IFTTT. You will create an Applet that listens for incoming data from Pipedream (Step 4), triggers a Telegram action (Step 5), and delivers the final message to your chat (Step 6).
+Deploy on Pipedream (Steps 1-3): It involves setting up a Pipedream workflow. This workflow starts with a scheduler that triggers the process weekly. The trigger runs the provided Python script, which fetches the latest sentiment data from the AAII website and formats it. Finally, the script sends this data to the IFTTT webhook URL you created in the first step, completing the connection between the two services and activating the full pipeline.
 
-Create a new Applet in your IFTTT account.
-
-For the If This condition, select the Webhooks service and choose the Receive a web request with a JSON payload trigger.
-
-Define an Event Name (e.g., aaii_sentiment_update) and create the trigger.
-
-For the Then That action, select the Telegram service.
-
-Choose the Send message action. Connect your Telegram account if prompted.
-
-In the Message text field, use the {{value1}} ingredient. This corresponds to the formatted message sent from the Python script.
-
-Select the target chat for notifications and finish the applet.
-
-Navigate to the Webhooks service page and click Documentation. Copy your unique key from the URL provided. This key is required for Pipedream to authorize its requests.
-
-Step 2: Deploy the Data Processing Workflow (Pipeline Steps 1-3)
-This second step configures the Pipedream workflow, which handles the start of the pipeline. The workflow initiates on a schedule (Step 1), executes the Python script to fetch and format the sentiment data (Step 2), and sends that data to the IFTTT webhook you just created (Step 3).
-
-Create a new Workflow in your Pipedream account.
-
-Select Schedule as the trigger and configure your desired interval (e.g., weekly).
-
-Add a Run Python Code step.
-
-Paste the code from the pipedream_code.py file into the editor.
-
-In the Python step, create an Environment Variable.
-
-Set the name to IFTTT_AAII_SENTIMENT_KEY and paste your IFTTT key from Step 1.8 as the value.
-
-Ensure the event_name variable in the Python script matches the event name from Step 1.3.
-
-Deploy and enable the workflow.
-
-The automation is now live and will execute based on the defined schedule.
+Configure IFTTT (Steps 4-6): It involves creating an IFTTT Applet. This Applet acts as the receiver. It generates a unique webhook URL that listens for incoming data. When data arrives, the Applet is configured to automatically trigger the Telegram service, which then sends a pre-formatted message to the specified chat. This handles the entire notification end of the pipeline.
