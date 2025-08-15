@@ -46,7 +46,6 @@ def handler(pd: "pipedream"):
         )
         
         # IFTTT webhook configuration
-        # Replace with your actual IFTTT webhook URL
         ifttt_key = os.environ["IFTTT_AAII_SENTIMENT_KEY"]
         ifttt_webhook_url = f"https://maker.ifttt.com/trigger/AAII_sentiment/json/with/key/{ifttt_key}"
         
